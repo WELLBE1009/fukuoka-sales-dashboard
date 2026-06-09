@@ -62,7 +62,12 @@ h1{font-size:16px;color:#fff;margin-bottom:4px}
 <div class="card">
   <h2>🏷 カテゴリ別 今年 vs 前年</h2>
   <canvas id="catBar"></canvas>
-  <p class="note">※ 前年「定食」カテゴリは今年「カレー・丼」「揚げ物・サイド」「肉吸い」に再編。前年「従食」を従業員食に追加。</p>
+  <p class="note">※ 前年「定食」カテゴリは今年「カレー・丼」「揚げ物・サイド」「肉吸い」に再編。前年「従食」を従業員食に追加。ごはん・サイドメニューは集計方法変更のため別枠表示。</p>
+</div>
+<div class="card" style="border:1px solid #3a3d4a">
+  <h2>📦 ごはん・サイドメニュー（別枠・参考値）</h2>
+  <canvas id="gohanBar" height="100"></canvas>
+  <p class="note">※ 前年¥640は朝食除外前の集計漏れによる過小計上。前年比+4,731%は実態を反映しておらず参考値。今年¥30,920が実勢値。</p>
 </div>
 <div class="card">
   <h2>📈 カテゴリ別 前年比増減率</h2>
@@ -119,7 +124,7 @@ new Chart(document.getElementById('dailyChart'),{
   options:{plugins:{legend:{labels:{color:'#ccc',font:{size:10}}},tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ¥${ctx.raw.toLocaleString()}`}}},
     scales:{x:{ticks:{color:'#888',font:{size:8},maxRotation:45},grid:{color:'#1e2130'}},y:{ticks:{callback:v=>'¥'+v.toLocaleString(),color:'#aaa',font:{size:9}},grid:{color:'#1e2130'}}}}
 });
-const cf=cats.filter(c=>c.name!=='定食（廃止）');
+const cf=cats.filter(c=>c.name!=='定食（廃止）'&&c.name!=='ごはん・サイドメニュー');
 new Chart(document.getElementById('catBar'),{
   type:'bar',
   data:{labels:cf.map(c=>c.name),datasets:[
@@ -129,10 +134,19 @@ new Chart(document.getElementById('catBar'),{
   options:{indexAxis:'y',plugins:{legend:{labels:{color:'#ccc',font:{size:10}}},tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ¥${ctx.raw.toLocaleString()}`}}},
     scales:{x:{ticks:{callback:v=>'¥'+v.toLocaleString(),color:'#aaa',font:{size:9}},grid:{color:'#1e2130'}},y:{ticks:{color:'#ccc',font:{size:9}},grid:{color:'#1e2130'}}}}
 });
-const rateData=cats.map(c=>c.prev===0?null:c.cur===0?-100:Math.round((c.cur/c.prev-1)*100));
+const rateCats=cats.filter(c=>c.name!==`ごはん・サイドメニュー`);const gohan=cats.find(c=>c.name==='ごはん・サイドメニュー');
+new Chart(document.getElementById('gohanBar'),{
+  type:'bar',
+  data:{labels:['ごはん・サイドメニュー'],datasets:[
+    {label:'今年',data:[gohan.cur],backgroundColor:'#aaaacc',borderRadius:4},
+    {label:'前年（参考）',data:[gohan.prev],backgroundColor:'#55555566',borderRadius:4},
+  ]},
+  options:{indexAxis:'y',plugins:{legend:{labels:{color:'#ccc',font:{size:10}}},tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ¥${ctx.raw.toLocaleString()}`}}},scales:{x:{ticks:{callback:v=>'¥'+v.toLocaleString(),color:'#aaa',font:{size:9}},grid:{color:'#1e2130'}},y:{ticks:{color:'#ccc',font:{size:9}},grid:{color:'#1e2130'}}}}
+});
+const rateData=rateCats.map(c=>c.prev===0?null:c.cur===0?-100:Math.round((c.cur/c.prev-1)*100));
 new Chart(document.getElementById('rateBar'),{
   type:'bar',
-  data:{labels:cats.map(c=>c.name),datasets:[{label:'前年比(%)',data:rateData,
+  data:{labels:rateCats.map(c=>c.name),datasets:[{label:'前年比(%)',data:rateData,
     backgroundColor:rateData.map(v=>v===null?'#4e7fff55':v>=0?'#06d6a088':'#ff6b6b88'),
     borderColor:rateData.map(v=>v===null?'#4e7fff':v>=0?'#06d6a0':'#ff6b6b'),borderWidth:1,borderRadius:3}]},
   options:{indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.raw===null?'新規':ctx.raw+'%'}}},
