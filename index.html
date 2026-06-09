@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>福岡 売上ダッシュボード</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      max-width: 600px;
+      width: 90%;
+      padding: 40px 20px;
+    }
+    h1 {
+      font-size: 1.6rem;
+      color: #1a202c;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    p.subtitle {
+      text-align: center;
+      color: #718096;
+      font-size: 0.9rem;
+      margin-bottom: 36px;
+    }
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px 28px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      text-decoration: none;
+      color: #2d3748;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
+    .card-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+    .card-text h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .card-text p {
+      font-size: 0.82rem;
+      color: #718096;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.78rem;
+      color: #a0aec0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>福岡 売上ダッシュボード</h1>
+    <p class="subtitle">各レポートを選択してください</p>
+    <div class="card-list">
+      <a class="card" href="01_category_analysis.html">
+        <div class="card-icon">📊</div>
+        <div class="card-text">
+          <h2>カテゴリ別分析</h2>
+          <p>商品カテゴリごとの売上構成・推移</p>
+        </div>
+      </a>
+      <a class="card" href="02_weekly_category.html">
+        <div class="card-icon">📅</div>
+        <div class="card-text">
+          <h2>週次カテゴリ別集計</h2>
+          <p>週ごとのカテゴリ別売上サマリー</p>
+        </div>
+      </a>
+      <a class="card" href="03_yoy_comparison.html">
+        <div class="card-icon">📈</div>
+        <div class="card-text">
+          <h2>前年同期比較</h2>
+          <p>昨対比・成長率の比較分析</p>
+        </div>
+      </a>
+    </div>
+    <footer>Fukuoka Sales Dashboard</footer>
+  </div>
+</body>
+</html>
